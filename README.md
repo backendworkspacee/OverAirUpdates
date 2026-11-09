@@ -1,55 +1,54 @@
-# Marks Mitra Over-The-Air (OTA) Updates Repository Guide
+﻿# Marks Mitra Over-The-Air (OTA) Updates Repository
 
-This folder demonstrates the exact structure to maintain in your GitHub repository:
-`https://github.com/backendworkspacee/OverAirUpdates.git`
+All APKs (for Android) and .exe installers (for Windows) are stored directly inside the `Marks Mitra/` folder in this repository.
 
 ---
 
-## 📁 Repository Structure on GitHub
+## 📁 Repository Structure
 
-```text
+`	ext
 OverAirUpdates/
 ├── README.md
 └── Marks Mitra/
-    └── vHistory.tsv
-```
+    ├── vHistory.tsv
+    ├── MarksMitra-v1.0.0.apk
+    ├── MarksMitra-v1.0.0.exe
+    ├── MarksMitra-v1.0.1.apk
+    └── MarksMitra-v1.0.1.exe
+`
 
 ---
 
-## 📄 `Marks Mitra/vHistory.tsv` File Format
+## 📄 Marks Mitra/vHistory.tsv Schema
 
-`vHistory.tsv` is a **Tab-Separated Values (TSV)** file. 
-Column names (Row 1):
-`version_code	version_name	release_notes	apk_download_url	size_formatted	mandatory	release_date`
+Columns are **Tab-separated (\t)**:
+`version_code	version_name	release_notes	apk_download_url	exe_download_url	size_formatted	mandatory	release_date`
 
-### Example Row for Version 1.0.1:
-```tsv
-version_code	version_name	release_notes	apk_download_url	size_formatted	mandatory	release_date
-2	1.0.1	• Fixed dark mode transition\n• Improved exam card loading speed\n• Added notification sync reliability	https://github.com/backendworkspacee/OverAirUpdates/releases/download/v1.0.1/marksmitra-v1.0.1.apk	19.2 MB	false	2026-11-10
-```
+### Direct Raw URLs for Files Stored in this Folder:
+- **APK URL**: https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/<FILENAME>.apk
+- **EXE URL**: https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/<FILENAME>.exe
 
-> **Important**:
-> - Columns are separated by **TAB characters** (`\t`), not spaces.
-> - Multi-line release notes can use `\n` which will be automatically rendered as line breaks in the update dialog.
-> - `mandatory`: set to `true` if you want to require users to update before continuing, or `false` to let them dismiss the dialog.
-> - `version_code`: Always an increasing integer (`1`, `2`, `3`...). When this is greater than the app's current version code (`CURRENT_VERSION_CODE = 1`), the app automatically notifies the user.
+### Example Row (v1.0.1):
+`	sv
+2	1.0.1	• Fixed dark mode transition\n• Improved exam card loading speed\n• Added notification sync reliability	https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/MarksMitra-v1.0.1.apk	https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/MarksMitra-v1.0.1.exe	19.2 MB	false	2026-11-10
+`
 
 ---
 
-## 🚀 How to Publish an Update:
+## 🚀 How to Add a New App Update:
 
-1. Create a new Release in your GitHub repo: `https://github.com/backendworkspacee/OverAirUpdates/releases/new`
-2. Set Tag name (e.g. `v1.0.1`).
-3. Upload your built `.apk` file into the GitHub Release assets.
-4. Copy the direct download link of the uploaded APK file.
-5. In your repo's `Marks Mitra/vHistory.tsv` file, add a new row with:
-   - `version_code`: `2` (or incremented number)
-   - `version_name`: `1.0.1`
-   - `release_notes`: What's new in this release
-   - `apk_download_url`: The direct link to your GitHub release APK
-   - `size_formatted`: e.g. `19.5 MB`
-   - `mandatory`: `false`
-   - `release_date`: `2026-11-10`
-6. Commit & Push to `main`.
-7. All installed Marks Mitra user apps will instantly detect the new update on next launch or when checked in Settings!
-
+1. Build your new release file:
+   - For Android APK: .\gradlew :Global:user-app:assembleRelease
+   - For Windows .exe: .\gradlew :Global:user-app:packageReleaseExe
+2. Name the files (e.g., MarksMitra-v1.0.1.apk, MarksMitra-v1.0.1.exe).
+3. Place them directly inside the Marks Mitra/ folder in this repository.
+4. Add a new row in Marks Mitra/vHistory.tsv with:
+   - ersion_code (e.g. 2)
+   - ersion_name (e.g. 1.0.1)
+   - elease_notes (use \n for line breaks)
+   - pk_download_url (https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/MarksMitra-v1.0.1.apk)
+   - exe_download_url (https://raw.githubusercontent.com/backendworkspacee/OverAirUpdates/main/Marks%20Mitra/MarksMitra-v1.0.1.exe)
+   - size_formatted (e.g. 19.2 MB)
+   - mandatory (alse or 	rue)
+   - elease_date (2026-11-10)
+5. Commit & Push to GitHub.
